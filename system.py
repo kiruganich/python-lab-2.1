@@ -32,7 +32,7 @@ class FileTaskSource:
         with open(self.filepath, "r", encoding="utf-8") as f:
             for item in json.load(f):
                 yield Task(
-                    description=item.get("description") # удалено другое значение , "No description"
+                    description=item.get("description"), # удалено другое значение , "No description"
                     priority=item.get("priority") # удалено другое значение , 10
                 )
 
@@ -57,9 +57,9 @@ class APITaskSource:
     """Заглушка внешнего API-источника."""
 
     DEFAULT_TASKS = [
-        {"description": "Low priority task", "priority": 8}
-        {"description": "Medium priority task", "priority": 5}
-        {"description": "High priority task", "priority": 3}
+        {"description": "Low priority task", "priority": 8},
+        {"description": "Medium priority task", "priority": 5},
+        {"description": "High priority task", "priority": 3},
         {"description": "The highest priority task", "priority": 1}
     ]
 
