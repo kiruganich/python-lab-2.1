@@ -18,6 +18,7 @@ def demo_task() -> None:
 
     """Task model demonstration: descriptors and property."""
 
+    logger.info("\nTask class demonstration")
     task = Task(
         payload="Demo user task",
         priority=8
@@ -27,7 +28,8 @@ def demo_task() -> None:
     logger.info(f"Priority: {task.priority}")
     logger.info(f"Status: {task.status}")
     logger.info(f"Created at: {task.time}")
-    
+
+    logger.info("Safety check: trying to change task ID")
     try:
         task.id = "hacked"
     except AttributeError as e:
@@ -38,11 +40,13 @@ def demo_task() -> None:
     logger.info(f"payload was updated: {task.payload}")
     logger.info(f"priority was updated: {task.priority}")
 
+    logger.info("Safety check: trying to set invalid priority")
     try:
         task.priority = 666
     except TaskPriorityError as e:
         print(f"Priority validation: {e}")
 
+    logger.info("Safety check: trying to set invalid payload")
     try:
         task.payload = [1, 2, 3]
     except TaskPayloadError as e:
@@ -52,12 +56,13 @@ def demo_task() -> None:
 
     logger.info(f"is_ready = {task.is_ready} (status='{task.status}', priority={task.priority})")
     logger.info(f"is_active = {task.is_active}")
-    logger.info(f"age = {task.age:.2f} сек")
+    logger.info(f"age = {task.age} sec")
 
 
 def demo_sources() -> None:
     """Task sources demonstration."""
 
+    logger.info("\nReturning task from sources demonstration")
     # Source: Generator
     gen_source = GeneratorTaskSource(count=2, prefix="gen")
     for i, task in enumerate(gen_source.get_tasks(), 1):
@@ -86,7 +91,10 @@ def demo_sources() -> None:
     logger.info("\nSample file deleted")
 
 def main() -> None:
+
     try:
+        logger.info("Demonstration started.")
+
         demo_task()
 
         demo_sources()

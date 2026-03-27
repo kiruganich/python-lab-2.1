@@ -82,7 +82,7 @@ class Task:
     @property
     def is_ready(self) -> bool:
         """Check if task is "ready" """
-        return self._status == "ready" and self.priority > 5
+        return self._status == "ready"
     
     @property
     def is_active(self) -> bool:
