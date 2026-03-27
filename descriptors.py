@@ -13,7 +13,7 @@ class ValidPayload:
         return getattr(instance, self.name)
     
     def __set__(self, instance, value) -> None:
-        if not instance(value, str):
+        if not isinstance(value, str):
             logger.error("Payload validation failed: Paylod must be string")
             raise TaskPayloadError("Paylod must be string")
         setattr(instance, self.name, value)
@@ -44,17 +44,17 @@ class ValidPriority:
 
 class ValidStatus:
     VALID_STATUSES = frozenset({
-        "new"
-        "ready"
-        "processing"
-        "done"
+        "new",
+        "ready",
+        "processing",
+        "done",
         "cancelled"
     })
 
     def __set_name__(self, owmer, name) -> None:
         self.name = "_" + name
 
-    def _get__(self, instance, owner) -> str:
+    def __get__(self, instance, owner) -> str:
         if instance is None:
             return self
         return getattr(instance, self.name)
@@ -69,4 +69,6 @@ class ValidStatus:
             logger.error("Invalid status")
             raise TaskStatusError("Status validation failed: Invalid status")
         setattr(instance, self.name, normalized)
+
+
 

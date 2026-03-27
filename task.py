@@ -14,7 +14,7 @@ class Task:
     Модель задачи в платформе обработки задач.
     
     Атрибуты:
-    1. Пользовательские (description, priority) — валидация через дескрипторы
+    1. Пользовательские (payload, priority) — валидация через дескрипторы
     2. Системные (id, status, created_at) — генерируются системой, read-only
     3. Вычисляемые (is_ready, is_active, age) — property
 
@@ -105,7 +105,7 @@ class Task:
         """Official string representation for debugging"""
         return (
             f"Task(id={self._id!r}, "
-            f"description={self.description!r}, "
+            f"payload={self.payload!r}, "
             f"priority={self.priority}, "
             f"status={self.status!r})"
         )
