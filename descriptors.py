@@ -14,7 +14,7 @@ class ValidPayload:
     
     def __set__(self, instance, value) -> None:
         if not isinstance(value, str):
-            logger.error("Payload validation failed: Paylod must be string")
+            logger.error("Payload validation failed: Payload must be string")
             raise TaskPayloadError("Paylod must be string")
         setattr(instance, self.name, value)
 
