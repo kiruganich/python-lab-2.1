@@ -102,7 +102,7 @@ class ReadOnly:
             return self
         return getattr(instance, self.name)
     
-    def __set__(self, instance, value):
+    def __set__(self, instance, value) -> None:
         if self.name in instance.__dict__:
             logger.error(f"Read-only violation: attempt to change '{self.name}'")
             raise AttributeError(f"'{self.name}' is read-only and cannot be modified after initialization")
