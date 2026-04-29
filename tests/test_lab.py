@@ -5,9 +5,9 @@ import pytest
 from datetime import datetime, timedelta
 from unittest.mock import patch, MagicMock
 
-from task import Task
-from descriptors import ValidPayload, ValidPriority, ValidStatus
-from exceptions import (
+from src.task import Task
+from src.descriptors import ValidPayload, ValidPriority, ValidStatus
+from src.exceptions import (
     TaskValidationError,
     TaskPayloadError,
     TaskPriorityError,
@@ -199,7 +199,7 @@ class TestTaskProperties:
         age2 = task.age
         assert age2 > age1
 
-    @patch("task.datetime")
+    @patch("src.task.datetime")
     def test_age_with_mocked_time(self, mock_datetime):
         fixed_time = datetime(2024, 1, 1, 12, 0, 0)
         later_time = datetime(2024, 1, 1, 12, 0, 30)
@@ -261,10 +261,13 @@ class TestTaskMagicMethods:
 
     def test_eq_same_id(self):
         task1 = Task(payload="Test", priority=5)
+        assert task1 == task1
+
         task2 = Task(payload="Other", priority=1)
-        task2._id = task1.id  # type: ignore
+        task2.__dict__['_id'] = task1.id
         
         assert task1 == task2
+        assert task1 is not task2
 
     def test_eq_different_id(self):
         task1 = Task(payload="Test 1", priority=5)
@@ -336,7 +339,7 @@ class TestTaskEdgeCases:
     def test_descriptor_access_on_class(self):
         assert isinstance(Task.payload, ValidPayload)
         assert isinstance(Task.priority, ValidPriority)
-        assert isinstance(Task._status, ValidStatus)
+        assert isinstance(Task.status, ValidStatus)
 
     def test_payload_with_special_characters(self):
         task = Task(payload="Task with emoji 🚀 and special: !@#$%", priority=5)

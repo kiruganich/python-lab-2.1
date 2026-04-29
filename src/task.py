@@ -1,10 +1,9 @@
 from __future__ import annotations
-from dataclasses import dataclass
 import uuid
 from datetime import datetime
 
-from descriptors import ValidPayload, ValidPriority, ValidStatus
-from exceptions import TaskValidationError
+from src.descriptors import ValidPayload, ValidPriority, ValidStatus, ReadOnly
+from src.exceptions import TaskValidationError
 
 
 
@@ -22,44 +21,29 @@ class Task:
         
     payload = ValidPayload()
     priority = ValidPriority()
-
-    _status = ValidStatus()
+    id = ReadOnly()
+    time = ReadOnly()
+    status = ValidStatus()
 
     def __init__(self, payload : str = "None", priority : int = 10):
 
         # system attributes
-        self._id : str = str(uuid.uuid4())
-        self._time : datetime = datetime.now()
+        self.id : str = str(uuid.uuid4())
+        self.time : datetime = datetime.now()
 
         # user attributes
         self.payload = payload
         self.priority = priority
 
         # initial state
-        self._status: str = "new"
+        self.status: str = "new"
 
-    # read-only methods
-
-    @property
-    def id(self) -> str:
-        """Get ID"""
-        return self._id
-    
-    @property
-    def time(self) -> datetime:
-        """Get initialization time"""
-        return self._time
-    
-    @property
-    def status(self) -> str:
-        """Get task status"""
-        return self._status
     
     # system methods
 
     def _set_status(self, status: str) -> None:
         """Set task status"""
-        self._status = status
+        self.status = status
 
     def _mark_ready(self) -> None:
         """Change task status to "ready" """
@@ -82,7 +66,7 @@ class Task:
     @property
     def is_ready(self) -> bool:
         """Check if task is "ready" """
-        return self._status == "ready"
+        return self.status == "ready"
     
     @property
     def is_active(self) -> bool:
@@ -92,19 +76,19 @@ class Task:
     @property
     def is_done(self) -> bool:
         """Check if task is "done" """
-        return self._status == "done"
+        return self.status == "done"
     
     @property
     def age(self) -> float:
         """Get the age of the task in seconds"""
-        return (datetime.now() - self._time).total_seconds()
+        return (datetime.now() - self.time).total_seconds()
     
     #magic methods
 
     def __repr__(self) -> str:
         """Official string representation for debugging"""
         return (
-            f"Task(id={self._id!r}, "
+            f"Task(id={self.id!r}, "
             f"payload={self.payload!r}, "
             f"priority={self.priority}, "
             f"status={self.status!r})"
@@ -114,6 +98,6 @@ class Task:
         """Checking equality of tasks by identifier"""
         if not isinstance(other, Task):
             return NotImplemented
-        return self._id == other._id
+        return self.id == other.id
     
     

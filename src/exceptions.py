@@ -1,5 +1,5 @@
 """
-Специализированные исключения для модели задачи.
+Исключения для модели задачи.
 
 """
 
@@ -29,4 +29,13 @@ class TaskPriorityError(TaskValidationError):
 
 class TaskStatusError(TaskValidationError):
     """Ошибка валидации статуса задачи."""
+    pass
+
+
+
+class TaskSourceValidationError(Exception):
+    """
+    Базовое исключение для ошибок валидации источников
+
+    """
     pass

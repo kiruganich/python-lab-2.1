@@ -3,9 +3,10 @@ from pathlib import Path
 
 import logging
 
-from task import Task
-from exceptions import TaskValidationError, TaskPriorityError, TaskPayloadError
-from system import GeneratorTaskSource, APITaskSource, FileTaskSource, create_sample_file
+from src.task import Task
+from src.exceptions import TaskValidationError, TaskPriorityError, TaskPayloadError
+from src.sources import GeneratorTaskSource, APITaskSource, FileTaskSource
+from src.system import create_sample_file
 
 logging.basicConfig(
     level=logging.INFO,
@@ -53,6 +54,7 @@ def demo_task() -> None:
         print(f"Payload validation: {e}")
     
     task._set_status("ready")
+
 
     logger.info(f"is_ready = {task.is_ready} (status='{task.status}', priority={task.priority})")
     logger.info(f"is_active = {task.is_active}")

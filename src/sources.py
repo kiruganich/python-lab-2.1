@@ -1,21 +1,14 @@
 from __future__ import annotations
-from typing import Iterator, runtime_checkable, Protocol, Any
+from typing import Iterator
 from pathlib import Path
 import json
 import logging
 from random import randint
-from task import Task
+
+from src.task import Task
 
 logger = logging.getLogger(__name__)
 
-@runtime_checkable
-class TaskSource(Protocol):
-    """
-    Контракт для источников задач
-
-    """
-    def get_tasks(self) -> Iterator[Task]:
-        ...
 
 class FileTaskSource:
     """Источник - JSON-файл."""
@@ -32,8 +25,8 @@ class FileTaskSource:
         with open(self.filepath, "r", encoding="utf-8") as f:
             for item in json.load(f):
                 yield Task(
-                    payload=item.get("payload"), # удалено другое значение , "No payload"
-                    priority=item.get("priority") # удалено другое значение , 10
+                    payload=item.get("payload"),
+                    priority=item.get("priority")
                 )
 
 class GeneratorTaskSource:
@@ -73,23 +66,3 @@ class APITaskSource:
                 payload=item["payload"],
                 priority=item["priority"]
             )
-
-
-def create_sample_file(filepath: str | Path, tasks: list[dict]) -> Path:
-
-    """Create test JSON-file"""
-    
-    path = Path(filepath)
-    logger.debug(f"Creating sample file: {path} with {len(tasks)} tasks")
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(tasks, f, indent=2, ensure_ascii=False)
-    logger.info(f"Sample file created: {path}")
-    return path
-
-def validate_source(source: Any) -> bool:
-
-    """Check the object for compliance with the protocol TaskSource."""
-
-    result = isinstance(source, TaskSource)
-    logger.debug(f"validate_source({type(source).__name__}) = {result}")
-    return result
