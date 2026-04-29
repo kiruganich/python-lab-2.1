@@ -70,8 +70,8 @@ class Task:
     
     @property
     def is_active(self) -> bool:
-        """Check if task is not "completed" or  "cancelled" yet"""
-        return self.status not in {"completed", "cancelled"}
+        """Check if task is not "done" or  "cancelled" yet"""
+        return self.status not in {"done", "cancelled"}
     
     @property
     def is_done(self) -> bool:
